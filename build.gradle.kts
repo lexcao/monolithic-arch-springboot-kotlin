@@ -29,6 +29,7 @@ dependencies {
     implementation("org.springframework.security.oauth:spring-security-oauth2:2.3.5.RELEASE")
 
     implementation("com.github.ben-manes.caffeine:caffeine:2.6.2")
+//    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
     runtimeOnly("org.hsqldb:hsqldb")
     runtimeOnly("mysql:mysql-connector-java")
