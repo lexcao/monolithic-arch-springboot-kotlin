@@ -1,5 +1,6 @@
 package com.github.fenixsoft.bookstore;
 
+import io.lexcao.bookstore.BookstoreApplication;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

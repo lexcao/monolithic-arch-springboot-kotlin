@@ -1,9 +1,7 @@
 package com.github.fenixsoft.bookstore.resource;
 
-import com.github.fenixsoft.bookstore.BookstoreApplication;
-import org.glassfish.jersey.client.ClientConfig;
+import io.lexcao.bookstore.BookstoreApplication;
 import org.glassfish.jersey.client.HttpUrlConnectorProvider;
-import org.glassfish.jersey.server.ResourceConfig;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,7 +13,6 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
