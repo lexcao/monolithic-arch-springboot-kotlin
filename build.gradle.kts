@@ -16,6 +16,8 @@ repositories {
 }
 
 dependencies {
+    implementation ("io.github.microutils:kotlin-logging-jvm:2.0.10")
+
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-cache")
