@@ -4,7 +4,7 @@ import io.lexcao.bookstore.domain.account.Account
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
-internal class AccountResourceTest : JAXRSResourceBase() {
+class AccountResourceTest : JAXRSResourceBase() {
 
     @Test
     fun userWithExistAccount() {

@@ -13,5 +13,5 @@ import javax.persistence.MappedSuperclass
 abstract class BaseEntity : Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int = 0
+    open val id: Int = 0
 }

@@ -34,7 +34,7 @@ class JAXRSResourceBase : DBRollbackBase() {
         .request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
         .apply {
             if (accessToken != null) {
-                header("Authorization", "bearer $accessToken");
+                header("Authorization", "bearer $accessToken")
             }
         }
 
@@ -46,10 +46,10 @@ class JAXRSResourceBase : DBRollbackBase() {
         return JSONArray(response.readEntity(String::class.java))
     }
 
-    fun authenticated(block: () -> Unit) {
+    fun <T> authenticated(block: () -> T): T {
         try {
             login()
-            block()
+            return block()
         } finally {
             logout()
         }

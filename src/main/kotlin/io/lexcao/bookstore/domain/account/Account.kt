@@ -1,7 +1,7 @@
 package io.lexcao.bookstore.domain.account
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.github.fenixsoft.bookstore.domain.BaseEntity
+import io.lexcao.bookstore.domain.BaseEntity
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.validation.constraints.Email
@@ -19,6 +19,7 @@ data class Account(
     val telephone: String = "",
     @field:Email
     val email: String = "",
+    override val id: Int = 0
 ) : BaseEntity() {
 
     @field:NotEmpty(message = "用户姓名不允许为空")
