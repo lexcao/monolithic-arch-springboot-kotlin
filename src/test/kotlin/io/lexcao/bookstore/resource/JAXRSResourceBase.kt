@@ -3,6 +3,8 @@ package io.lexcao.bookstore.resource
 import io.lexcao.bookstore.BookstoreApplication
 import io.lexcao.bookstore.DBRollbackBase
 import org.glassfish.jersey.client.HttpUrlConnectorProvider
+import org.json.JSONException
+import org.json.JSONObject
 import org.junit.jupiter.api.Assertions
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
@@ -11,6 +13,7 @@ import javax.ws.rs.client.Entity
 import javax.ws.rs.client.Invocation
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
+import javax.ws.rs.core.UriBuilder
 
 /**
  * 单元测试基类
@@ -23,10 +26,52 @@ class JAXRSResourceBase : DBRollbackBase() {
     @Value("\${local.server.port}")
     var port: Int = 0
 
+    private var accessToken: String? = null
+
     fun build(path: String): Invocation.Builder = ClientBuilder.newClient()
         .target("http://localhost:$port/restful$path")
         .property(HttpUrlConnectorProvider.SET_METHOD_WORKAROUND, true)
         .request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
+        .apply {
+            if (accessToken != null) {
+                header("Authorization", "bearer $accessToken");
+            }
+        }
+
+    fun json(response: Response): JSONObject {
+        return JSONObject(response.readEntity(String::class.java))
+    }
+
+    fun authenticated(block: () -> Unit) {
+        try {
+            login()
+            block()
+        } finally {
+            logout()
+        }
+    }
+
+    fun logout() {
+        accessToken = null
+    }
+
+    /**
+     * 单元测试中登陆固定使用icyfenix这个用户
+     */
+    fun login() {
+        val url = UriBuilder.fromPath("http://localhost:$port/oauth/token")
+            .queryParam("username", "icyfenix")
+            .queryParam("password", "MFfTW3uNI4eqhwDkG7HP9p2mzEUu%2Fr2")
+            .queryParam("grant_type", "password")
+            .queryParam("client_id", "bookstore_frontend")
+            .queryParam("client_secret", "bookstore_secret")
+        val resp = ClientBuilder.newClient().target(url).request().get()
+        try {
+            accessToken = json(resp).getString("access_token")
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+    }
 
     fun get(path: String): Response = build(path).get()
 

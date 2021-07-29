@@ -1,8 +1,8 @@
 package io.lexcao.bookstore.domain.account.validation
 
-import com.github.fenixsoft.bookstore.domain.auth.AuthenticAccount
 import io.lexcao.bookstore.domain.account.Account
 import io.lexcao.bookstore.domain.account.AccountRepository
+import io.lexcao.bookstore.domain.auth.AuthenticAccount
 import org.springframework.security.core.context.SecurityContextHolder
 import javax.inject.Inject
 import javax.validation.ConstraintValidator

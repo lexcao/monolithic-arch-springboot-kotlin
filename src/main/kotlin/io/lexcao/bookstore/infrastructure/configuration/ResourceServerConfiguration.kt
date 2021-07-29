@@ -1,5 +1,6 @@
 package io.lexcao.bookstore.infrastructure.configuration
 
+import io.lexcao.bookstore.domain.auth.service.JWTAccessTokenService
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -22,7 +23,9 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
  */
 @Configuration
 @EnableResourceServer
-class ResourceServerConfiguration : ResourceServerConfigurerAdapter() {
+class ResourceServerConfiguration(
+    val tokenService: JWTAccessTokenService
+) : ResourceServerConfigurerAdapter() {
 
     /**
      * 配置HTTP访问相关的安全选项
@@ -40,6 +43,6 @@ class ResourceServerConfiguration : ResourceServerConfigurerAdapter() {
     }
 
     override fun configure(resources: ResourceServerSecurityConfigurer) {
-//        resources.tokenServices(tokenService)
+        resources.tokenServices(tokenService)
     }
 }

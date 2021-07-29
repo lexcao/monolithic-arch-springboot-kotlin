@@ -32,9 +32,9 @@ internal class AccountResourceTest : JAXRSResourceBase() {
         assertBadRequest(post("/accounts", newbeeShouldFailure))
 
         val newbeeShouldSuccess = newbeeShouldFailure.copy(
-            telephone = "13888888888",
-            name = "somebody"
+            telephone = "13888888888"
         )
+        newbeeShouldSuccess.name = "somebody"
         assertNoContent(get("/accounts/newbee"))
         assertOK(post("/accounts", newbeeShouldSuccess))
         assertOK(get("/accounts/newbee"))
@@ -42,13 +42,14 @@ internal class AccountResourceTest : JAXRSResourceBase() {
 
     @Test
     fun updateUser() {
-        // TODO wait for auth
-        /*authenticatedScope(Runnable {
+        authenticated {
             val resp = get("/accounts/icyfenix")
             val icyfenix = resp.readEntity(Account::class.java)
             icyfenix.name = "zhouzhiming"
             assertOK(put("/accounts", icyfenix))
-            Assertions.assertEquals("zhouzhiming", get("/accounts/icyfenix").readEntity(Account::class.java).name, "should get the new name now")
-        })*/
+            Assertions.assertEquals("zhouzhiming",
+                get("/accounts/icyfenix").readEntity(Account::class.java).name,
+                "should get the new name now")
+        }
     }
 }

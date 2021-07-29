@@ -15,13 +15,14 @@ import javax.validation.constraints.Pattern
 data class Account(
     @field:NotEmpty(message = "用户名不允许为空")
     val username: String = "",
-    @field:NotEmpty(message = "用户姓名不允许为空")
-    val name: String = "",
     @field:Pattern(regexp = "1\\d{10}", message = "手机号格式不正确")
     val telephone: String = "",
     @field:Email
     val email: String = "",
 ) : BaseEntity() {
+
+    @field:NotEmpty(message = "用户姓名不允许为空")
+    var name: String = ""
 
     // 密码字段不参与序列化（但反序列化是参与的）、不参与更新（但插入是参与的）
     // 这意味着密码字段不会在获取对象（很多操作都会关联用户对象）的时候泄漏出去；
