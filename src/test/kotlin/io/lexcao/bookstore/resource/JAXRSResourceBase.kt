@@ -4,7 +4,6 @@ import io.lexcao.bookstore.BookstoreApplication
 import io.lexcao.bookstore.DBRollbackBase
 import org.glassfish.jersey.client.HttpUrlConnectorProvider
 import org.json.JSONArray
-import org.json.JSONException
 import org.json.JSONObject
 import org.junit.jupiter.api.Assertions
 import org.springframework.beans.factory.annotation.Value
@@ -63,7 +62,7 @@ class JAXRSResourceBase : DBRollbackBase() {
     /**
      * 单元测试中登陆固定使用icyfenix这个用户
      */
-    fun login() {
+    fun login(): JSONObject {
         val url = UriBuilder.fromPath("http://localhost:$port/oauth/token")
             .queryParam("username", "icyfenix")
             .queryParam("password", "MFfTW3uNI4eqhwDkG7HP9p2mzEUu%2Fr2")
@@ -71,10 +70,8 @@ class JAXRSResourceBase : DBRollbackBase() {
             .queryParam("client_id", "bookstore_frontend")
             .queryParam("client_secret", "bookstore_secret")
         val resp = ClientBuilder.newClient().target(url).request().get()
-        try {
-            accessToken = json(resp).getString("access_token")
-        } catch (e: JSONException) {
-            e.printStackTrace()
+        return json(resp).also {
+            accessToken = it.getString("access_token")
         }
     }
 
