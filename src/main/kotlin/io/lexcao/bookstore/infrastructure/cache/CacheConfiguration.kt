@@ -1,7 +1,6 @@
 package io.lexcao.bookstore.infrastructure.cache
 
 import com.github.benmanes.caffeine.cache.Caffeine
-import com.github.fenixsoft.bookstore.infrastructure.cache.CacheConfiguration
 import org.springframework.cache.Cache
 import org.springframework.cache.CacheManager
 import org.springframework.cache.annotation.EnableCaching
@@ -38,7 +37,7 @@ class CacheConfiguration {
     fun getSettlementTTLCache(): Cache = CaffeineCache(
         "settlement",
         Caffeine.newBuilder()
-            .expireAfterAccess(CacheConfiguration.SYSTEM_DEFAULT_EXPIRES, TimeUnit.MILLISECONDS)
+            .expireAfterAccess(SYSTEM_DEFAULT_EXPIRES, TimeUnit.MILLISECONDS)
             .build()
     )
 
