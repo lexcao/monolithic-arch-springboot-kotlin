@@ -3,6 +3,7 @@ package io.lexcao.bookstore.resource
 import io.lexcao.bookstore.BookstoreApplication
 import io.lexcao.bookstore.DBRollbackBase
 import org.glassfish.jersey.client.HttpUrlConnectorProvider
+import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import org.junit.jupiter.api.Assertions
@@ -40,6 +41,10 @@ class JAXRSResourceBase : DBRollbackBase() {
 
     fun json(response: Response): JSONObject {
         return JSONObject(response.readEntity(String::class.java))
+    }
+
+    fun jsonArray(response: Response): JSONArray {
+        return JSONArray(response.readEntity(String::class.java))
     }
 
     fun authenticated(block: () -> Unit) {

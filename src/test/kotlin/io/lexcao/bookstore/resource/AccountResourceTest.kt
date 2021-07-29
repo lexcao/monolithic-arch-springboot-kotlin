@@ -4,10 +4,6 @@ import io.lexcao.bookstore.domain.account.Account
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
-/**
- * @author icyfenix@gmail.com
- * @date 2020/4/6 18:52
- */
 internal class AccountResourceTest : JAXRSResourceBase() {
 
     @Test
