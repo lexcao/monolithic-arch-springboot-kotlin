@@ -1,3 +1,83 @@
+# Fenix's BookStore后端：以单体架构实现（Kotlin 实现）
+
+# Why Kotlin?
+
+## 1. 探索 Kotlin 接入 Java 后端开发生态兼容性
+
+✅ 各个依赖包的兼容性
+
+其中：jpa 和 jackson 有单独为 kotlin 适配的模块
+
+```
+// jpa，对于 nullable 的支持
+fun <T, ID> CrudRepository<T, ID>.findByIdOrNull(id: ID): T? = findById(id).orElse(null)
+
+// jackson，对于 data class 的支持
+implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+```
+
+### Kotlin final class 问题
+使用 Spring DI 注解 `@Servie`、`@Component` 没问题，而使用 `@Named` 出现需要 `make class open`
+
+原因是使用 gradle 插件 `kotlin("plugin.spring")` 已默认配置好相关 Spring DI 注解，对于别的注解需要手动配置
+```
+// build.gradle.kts
+allOpen {
+    annotation("javax.inject.Named")
+}
+```
+
+## 2. Kotlin 语法糖带来的代码量减少
+
+### 代码行数
+
+对比原 Java 项目，**20% 的代码量**减少
+
+由 [CLOC (Count Line of Code)](https://github.com/AlDanial/cloc) 统计
+```
+github.com/AlDanial/cloc v 1.88
+-------------------------------------------
+Language    files   blank   comment   code
+-------------------------------------------
+Kotlin      63      313     677       1611
+Java        64      635     1776      2083
+```
+
+### 语法糖举例
+集合操作
+```
+// java
+public void replenishProductInformation(Settlement bill) {
+    List<Integer> ids = bill.getItems().stream().map(Settlement.Item::getProductId).collect(Collectors.toList());
+    bill.productMap = repository.findByIdIn(ids).stream().collect(Collectors.toMap(Product::getId, Function.identity()));
+}
+
+// kotlin
+fun replenishProductInformation(bill: Settlement) {
+    val ids = bill.items.map(Settlement.Item::productId)
+    bill.productMap = repository.findByIdIn(ids).associateBy(Product::id)
+}
+```
+空安全和 data class
+```
+// Java
+Wallet wallet = repository.findByAccountId(accountId).orElseGet(() -> {
+            Wallet newWallet = new Wallet();
+            Account account = new Account();
+            account.setId(accountId);
+            newWallet.setMoney(0D);
+            newWallet.setAccount(account);
+            return repository.save(newWallet);
+        });
+
+// kotlin
+val wallet = repository.findByAccountId(accountId)
+            ?: Wallet()
+              .apply { account = Account(id = accountId) }
+              .let { repository.save(it) }
+```
+更多 Java 对应 Kotlin 代码，可以看下这个[仓库](https://github.com/MindorksOpenSource/from-java-to-kotlin)
+
 # Fenix's BookStore后端：以单体架构实现
 
 <p align="center">
